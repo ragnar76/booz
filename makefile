@@ -1,11 +1,7 @@
-#Make Booz -- makefile for **IX.  Rename to `makefile' before use.
-
 OOZOBJS = addbfcrc.o lzd.o booz.o oozext.o portable.o \
-	io.o huf.o decode.o maketbl.o
+    io.o huf.o decode.o maketbl.o
 
-CFLAGS = -c -O
-# CFLAGS = -c -g
-# CFLAGS = -c
+CFLAGS = -c -O3 -march=native -Wno-implicit-function-declaration -Wno-implicit-int -Wno-return-mismatch -Wno-conflicting-types -Wno-builtin-declaration-mismatch -Wno-int-conversion
 
 .c.o :
 	cc $(CFLAGS) $*.c
@@ -14,20 +10,17 @@ booz : $(OOZOBJS)
 	cc $(OOZOBJS) -o booz
 
 install : booz
-	mv booz /usr/local/bin/tbooz
+	mv booz /usr/local/bin/booz
 
 clean :
-	-/bin/rm -f core *.o
+	-/bin/rm -f core *.o booz
 
-# DEPENDENCIES follow
-
-# DO NOT DELETE this line
-
-booz.o: /usr/include/stdio.h booz.h zoo.h
-decode.o: /usr/include/stdio.h ar.h booz.h lzh.h zoo.h
-huf.o: /usr/include/stdio.h ar.h booz.h lzh.h zoo.h
-io.o: /usr/include/stdio.h ar.h booz.h lzh.h zoo.h
-lzd.o: /usr/include/stdio.h booz.h
-maketbl.o: /usr/include/stdio.h ar.h booz.h lzh.h zoo.h
-oozext.o: /usr/include/stdio.h booz.h zoo.h
-portable.o: /usr/include/stdio.h booz.h zoo.h
+# DEPENDENCIES
+booz.o: booz.h zoo.h
+decode.o: ar.h booz.h lzh.h zoo.h
+huf.o: ar.h booz.h lzh.h zoo.h
+io.o: ar.h booz.h lzh.h zoo.h
+lzd.o: booz.h
+maketbl.o: ar.h booz.h lzh.h zoo.h
+oozext.o: booz.h zoo.h
+portable.o: booz.h zoo.h
